@@ -1,2 +1,49 @@
 # ACSideMenuController
-An easy way to integrate slide menu to your app
+An easy way to integrate slide menu into your app
+![Preview](/Images/Preview.png)
+
+## Setup
+Create instances of your view controllers and then initialize `ACSideMenuController` like this: <br>
+```
+let menuController = ACSideMenuController(bottomViewController: bottomVC, topViewContoller: topVC)
+```
+and make it a root view controller of app's window:
+```
+self.window = UIWindow(frame: UIScreen.main.bounds)
+self.window!.rootViewController = menuController
+self.window!.makeKeyAndVisible()
+```
+
+## Replacing top & bottom view controllers
+You can easily replace top and bottom view controllers just like this: <br>
+```
+menuController.setTopViewController(newTopViewController)
+menuController.setBottomViewController(newBottomViewController)
+```
+Don't forget to call `menuController.toggleMenu()` after replacing top view controller.
+## Adding gesture recognizer
+You can add gesture recognizer to your view controller's view like this:
+```
+if let menuController = self.sideMenuController {
+    view.addGestureRecognizer(menuController.gestureRecognizer)
+}
+```
+## Behavior customization
+ACSideMenuController has a couple of behavior settings that you can change: <br>
+- `var openedMenuInset: CGFloat` customizes top view controller's inset while menu is opened
+- `var animationDuration: TimeInterval` customizes animation duration
+- `var shouldRecognizeMultipleGestures: Bool` is just a toggle from `UIGestureRecognizerDelegate`
+- `blocksInteractionWhileOpened: Bool` disables user interaction while menu is opened
+
+## Stay notified
+To notify you about state changes ACSideMenuController uses `NotificationCenter`. <br>
+Here is a list of available notifications: <br>
+- `ACSideMenuController.NotificationName.didOpenMenu`
+- `ACSideMenuController.NotificationName.didCloseMenu`
+- `ACSideMenuController.NotificationName.willChangeState`
+
+You can subscribe to this notifications like this: <br>
+```
+let notificationName = ACSideMenuController.NotificationName.willChangeState
+NotificationCenter.default.addObserver(self, selector: #selector(selectorToHandleChanges), name: stateNotificationName, object: nil)
+```
