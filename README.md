@@ -45,5 +45,5 @@ Here is a list of available notifications: <br>
 You can subscribe to this notifications like this: <br>
 ```
 let notificationName = ACSideMenuController.NotificationName.willChangeState
-NotificationCenter.default.addObserver(self, selector: #selector(selectorToHandleChanges), name: stateNotificationName, object: nil)
+NotificationCenter.default.addObserver(self, selector: #selector(selectorToHandleChanges), name: notificationName, object: nil)
 ```
