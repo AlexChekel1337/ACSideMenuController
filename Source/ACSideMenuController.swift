@@ -19,6 +19,12 @@ class ACSideMenuController: UIViewController {
     public var shouldRecognizeMultipleGestures: Bool = false
     public var blocksInteractionWhileOpened: Bool = false
     
+    public var shadowEnabled: Bool = true
+    public var shadowColor: UIColor = UIColor.black
+    public var shadowRadius: CGFloat = 10.0
+    public var shadowOpacity: Float = 0.5
+    public var shadowOffset: CGSize = CGSize(width: 0.0, height: 0.0)
+    
     //MARK: - Properties
     
     private var bottomViewContainer: UIView!
@@ -50,6 +56,11 @@ class ACSideMenuController: UIViewController {
         
         bottomVC = aBottomVC
         topVC = aTopVC
+        commonInit()
+    }
+    
+    init() {
+        super.init(nibName: nil, bundle: nil)
         commonInit()
     }
     
@@ -106,6 +117,16 @@ class ACSideMenuController: UIViewController {
         
         setBottomViewController(bottomVC)
         setTopViewController(topVC)
+        
+        if shadowEnabled {
+            topViewContainer.clipsToBounds = false
+            topViewContainer.layer.shadowPath = UIBezierPath(rect: topViewContainer.bounds).cgPath
+            
+            topViewContainer.layer.shadowColor = shadowColor.cgColor
+            topViewContainer.layer.shadowRadius = shadowRadius
+            topViewContainer.layer.shadowOpacity = shadowOpacity
+            topViewContainer.layer.shadowOffset = shadowOffset
+        }
     }
     
     //MARK: Status bar
