@@ -28,7 +28,7 @@ if let menuController = self.sideMenuController {
     view.addGestureRecognizer(menuController.gestureRecognizer)
 }
 ```
-## Behavior customization
+## Customization
 ACSideMenuController has a couple of behavior settings that you can change: <br>
 
 ### Behavior
@@ -56,3 +56,7 @@ You can subscribe to these notifications like this: <br>
 let notificationName = ACSideMenuController.NotificationName.willChangeState
 NotificationCenter.default.addObserver(self, selector: #selector(selectorToHandleChanges), name: notificationName, object: nil)
 ```
+
+## Changelog
+### v1.0
+- Initial release
