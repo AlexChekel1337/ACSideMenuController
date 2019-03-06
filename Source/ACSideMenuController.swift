@@ -1,3 +1,8 @@
+/*
+    v1.0
+    Available at https://github.com/AlexChekel1337/ACSideMenuController
+*/
+
 import UIKit
 
 //MARK: - ACSideMenuController
