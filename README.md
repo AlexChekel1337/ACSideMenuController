@@ -23,7 +23,7 @@ With that being done, navigate to the Identity Inspector section in the right me
 Now it's time to set top & bottom view controllers. Navigate to the Attributes Inspector section in the right menu and insert a StoryboardID of your view controller into the appropriate field. <br>
 ![Attributes Inspector](/Images/Storyboard_1.png) <br>
 
-As a bonus, ACSideMenuController supports different storyboards. If your view controller is stored inside of the storyboard, which name is not a "Main", you can set custom storyboard name for your view controller in the Attributes Inspector section.
+As a bonus, ACSideMenuController supports different storyboards. If your view controller is stored inside of a storyboard, which name is not a "Main", you can set custom storyboard name for your view controller in the Attributes Inspector section.
 
 ## Replacing top & bottom view controllers
 You can easily replace top and bottom view controllers just like this: <br>
