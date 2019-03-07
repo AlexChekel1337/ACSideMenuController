@@ -1,5 +1,5 @@
 /*
-    v1.0
+    v1.1
     Available at https://github.com/AlexChekel1337/ACSideMenuController
 */
 
@@ -19,16 +19,22 @@ class ACSideMenuController: UIViewController {
     
     //MARK: - Overrides
     
-    public var openedMenuInset: CGFloat = 80.0
-    public var animationDuration: TimeInterval = 0.5
-    public var shouldRecognizeMultipleGestures: Bool = false
-    public var blocksInteractionWhileOpened: Bool = false
+    @IBInspectable public var bottomViewControllerIdentifier: String?
+    @IBInspectable public var bottomViewControllerStoryboardName: String = "Main"
     
-    public var shadowEnabled: Bool = true
-    public var shadowColor: UIColor = UIColor.black
-    public var shadowRadius: CGFloat = 10.0
-    public var shadowOpacity: Float = 0.5
-    public var shadowOffset: CGSize = CGSize(width: 0.0, height: 0.0)
+    @IBInspectable public var topViewControllerIdentifier: String?
+    @IBInspectable public var topViewControllerStoryboardName: String = "Main"
+    
+    public var animationDuration: TimeInterval = 0.5
+    @IBInspectable public var openedMenuInset: CGFloat = 80.0
+    @IBInspectable public var shouldRecognizeMultipleGestures: Bool = false
+    @IBInspectable public var blocksInteractionWhileOpened: Bool = false
+    
+    @IBInspectable public var shadowEnabled: Bool = true {didSet {updateShadow()}}
+    @IBInspectable public var shadowColor: UIColor = UIColor.black {didSet {updateShadow()}}
+    @IBInspectable public var shadowRadius: CGFloat = 10.0 {didSet {updateShadow()}}
+    @IBInspectable public var shadowOpacity: Float = 0.5 {didSet {updateShadow()}}
+    @IBInspectable public var shadowOffset: CGSize = CGSize(width: 0.0, height: 0.0) {didSet {updateShadow()}}
     
     //MARK: - Properties
     
@@ -66,16 +72,41 @@ class ACSideMenuController: UIViewController {
     
     init() {
         super.init(nibName: nil, bundle: nil)
+        
+        print("init() called when using UIStoryboard")
+        if topViewControllerIdentifier != nil { print("topVC identifier is \(topViewControllerIdentifier!)") }
+        
         commonInit()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        commonInit()
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    //MARK: - UIStoryboard workflow
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        if bottomViewControllerIdentifier != nil {
+            let sbName = bottomViewControllerStoryboardName
+            let vcName = bottomViewControllerIdentifier!
+            let storyboard = UIStoryboard(name: sbName, bundle: nil)
+            let viewController = storyboard.instantiateViewController(withIdentifier: vcName)
+            
+            bottomVC = viewController
+        }
+        
+        if topViewControllerIdentifier != nil {
+            let sbName = topViewControllerStoryboardName
+            let vcName = topViewControllerIdentifier!
+            let storyboard = UIStoryboard(name: sbName, bundle: nil)
+            let viewController = storyboard.instantiateViewController(withIdentifier: vcName)
+            
+            topVC = viewController
+        }
+        
+        commonInit()
     }
     
     //MARK: - Setup and layout
@@ -122,15 +153,25 @@ class ACSideMenuController: UIViewController {
         
         setBottomViewController(bottomVC)
         setTopViewController(topVC)
+        updateShadow()
+    }
+    
+    private func updateShadow() {
+        guard let container = topViewContainer else {return}
+        
+        container.clipsToBounds = false
         
         if shadowEnabled {
-            topViewContainer.clipsToBounds = false
-            topViewContainer.layer.shadowPath = UIBezierPath(rect: topViewContainer.bounds).cgPath
-            
-            topViewContainer.layer.shadowColor = shadowColor.cgColor
-            topViewContainer.layer.shadowRadius = shadowRadius
-            topViewContainer.layer.shadowOpacity = shadowOpacity
-            topViewContainer.layer.shadowOffset = shadowOffset
+            container.layer.shadowPath = UIBezierPath(rect: topViewContainer.bounds).cgPath
+            container.layer.shadowColor = shadowColor.cgColor
+            container.layer.shadowRadius = shadowRadius
+            container.layer.shadowOpacity = shadowOpacity
+            container.layer.shadowOffset = shadowOffset
+        } else {
+            container.layer.shadowPath = nil
+            container.layer.shadowColor = nil
+            container.layer.shadowRadius = 0.0
+            container.layer.shadowOpacity = 0.0
         }
     }
     
@@ -195,7 +236,7 @@ class ACSideMenuController: UIViewController {
     
     private func openMenu() {
         topContainerXConstraint.constant = (view.center.x * 2) - openedMenuInset
-        self.isSideMenuOpened = true
+        isSideMenuOpened = true
         
         if blocksInteractionWhileOpened == true {stubView.isUserInteractionEnabled = true}
         
@@ -208,7 +249,7 @@ class ACSideMenuController: UIViewController {
     
     private func closeMenu() {
         topContainerXConstraint.constant = 0.0
-        self.isSideMenuOpened = false
+        isSideMenuOpened = false
         
         if blocksInteractionWhileOpened == true {stubView.isUserInteractionEnabled = false}
         
@@ -289,22 +330,6 @@ extension UIViewController {
         }
         
         return nil
-    }
-}
-
-//MARK: - NSLayoutConstraint extension
-
-fileprivate extension NSLayoutConstraint {
-    func constraintWithMultiplier(_ newMultiplier: CGFloat) -> NSLayoutConstraint {
-        let cFirstItem = self.firstItem as Any
-        let cFirstAttribute = self.firstAttribute
-        let cRelation = self.relation
-        let cSecondItem = self.secondItem as Any
-        let cSecondAttribute = self.secondAttribute
-        let cConstant = self.constant
-        
-        let newConstraint = NSLayoutConstraint(item: cFirstItem, attribute: cFirstAttribute, relatedBy: cRelation, toItem: cSecondItem, attribute: cSecondAttribute, multiplier: newMultiplier, constant: cConstant)
-        return newConstraint
     }
 }
 
