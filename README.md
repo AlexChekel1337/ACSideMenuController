@@ -14,6 +14,17 @@ self.window!.rootViewController = menuController
 self.window!.makeKeyAndVisible()
 ```
 
+## Working with UIStoryboard
+ACSideMenuController also supports a storyboard way. Here is how you do it using storyboard: <br>
+First, add a view controller scene to your storyboard and mark it as initial. <br>
+![View controller scene](/Images/Storyboard_0.png) <br>
+With that being done, navigate to the Identity Inspector section in the right menu and set it's class to `ACSideMenuController` <br>
+![Identity Inspector](/Images/Storyboard_2.png) <br>
+Now it's time to set top & bottom view controllers. Navigate to the Attributes Inspector section in the right menu and insert a StoryboardID of your view controller into the appropriate field. <br>
+![Attributes Inspector](/Images/Storyboard_1.png) <br>
+
+As a bonus, ACSideMenuController supports different storyboards. If your view controller is stored inside of the storyboard, which name is not a "Main", you can set custom storyboard name for your view controller in the Attributes Inspector section.
+
 ## Replacing top & bottom view controllers
 You can easily replace top and bottom view controllers just like this: <br>
 ```
@@ -60,3 +71,11 @@ NotificationCenter.default.addObserver(self, selector: #selector(selectorToHandl
 ## Changelog
 ### v1.0
 - Initial release
+
+### v1.1
+- Added support for `UIStoryboard`
+- Added the abilty to customize behavior visuals using Interface Builder
+- Fixed issue with shadow
+
+## Author
+Alexandr Chekel ([Twitter](https://twitter.com/alex_d1337))
