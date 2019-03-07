@@ -74,7 +74,7 @@ NotificationCenter.default.addObserver(self, selector: #selector(selectorToHandl
 
 ### v1.1
 - Added support for `UIStoryboard`
-- Added the abilty to customize behavior visuals using Interface Builder
+- Added the abilty to customize behavior and visuals using Interface Builder
 - Fixed issue with shadow
 
 ## Author
