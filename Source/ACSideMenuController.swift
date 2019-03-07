@@ -72,10 +72,6 @@ class ACSideMenuController: UIViewController {
     
     init() {
         super.init(nibName: nil, bundle: nil)
-        
-        print("init() called when using UIStoryboard")
-        if topViewControllerIdentifier != nil { print("topVC identifier is \(topViewControllerIdentifier!)") }
-        
         commonInit()
     }
     
